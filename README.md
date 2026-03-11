@@ -1,4 +1,4 @@
-# 🍳 open-source-chahan
+# open-source-chahan (OSC)
 
 > **オープンソースチャーハン** — オープンソースレシピ
 > License: MIT | Version: 1.0.0
