@@ -16,6 +16,8 @@ open-source-chahan/
 └── chahan.cook        # 製造パイプライン
 ```
 
+製造手順の記述には独自言語 [CookScript v1.0](./SPEC.md) を使用しています。
+
 ---
 
 ## Recommended Environment
@@ -99,5 +101,9 @@ Issue または Pull Request でお気軽にどうぞ。
 
 ## License
 
-[MIT](https://opensource.org/licenses/MIT) — 商用利用・改変・再配布自由です。  
+[MIT](https://opensource.org/licenses/MIT) — 商用利用・改変・再配布自由です。
 おいしく作れたら Star ⭐ をつけてくれると嬉しいです。
+
+---
+
+> このレシピは [Claude Code](https://claude.ai/claude-code) を使って記述しましたが、料理は人間が実際に作って検証済みです。
