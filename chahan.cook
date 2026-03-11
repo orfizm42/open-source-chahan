@@ -1,0 +1,208 @@
+// ============================================================
+//  chahan.cook  —  オープンソースチャーハン
+//  Language : CookScript v1.0
+//  Runtime  : あなた (human interpreter)
+//  Serves   : 2
+// ============================================================
+
+// ──────────────────────────────────────
+//  DEPENDENCIES（材料）
+//  定義元: ingredients.json#dependencies
+// ──────────────────────────────────────
+
+import {
+    rice,
+    egg              as eggs,
+    long_onion       as onion,
+    cooking_oil      as oil,
+    soy_sauce        as soy,
+    salt,
+    pepper,
+    sesame_oil       as sesame,
+    // optional — なくてもよいが入れると旨い
+    char_siu         as charsiu,
+    frozen_peas      as peas,
+    chicken_stock_powder as stock
+} from "./ingredients.json"
+
+// ──────────────────────────────────────
+//  DEV DEPENDENCIES（道具）
+//  定義元: ingredients.json#devDependencies
+// ──────────────────────────────────────
+
+import { wok, spatula } from "./ingredients.json#devDependencies"
+
+// ──────────────────────────────────────
+//  MISE EN PLACE（仕込み）
+//  ※ 料理中に手が止まると鍋が焦げる。
+//    すべてこの時点で準備すること。
+// ──────────────────────────────────────
+
+fn mise_en_place() {
+    assert rice != 炊きたて,
+        "E002: RICE_TOO_WET — 水分が多すぎます。冷やご飯か、
+         レンジで1分加熱して表面を乾かしてください。"
+
+    // 全材料を目の前に並べる
+    for item in [rice, eggs, onion, oil, soy, salt, pepper,
+                 sesame, charsiu, peas, stock] {
+        place_on_counter(item)    // 手の届く場所に配置
+    }
+}
+
+// ──────────────────────────────────────
+//  STEP 1 : 予熱
+//  ゴール: wok が SMOKING_HOT になること
+// ──────────────────────────────────────
+
+fn preheat() {
+    heat(wok, power: MAX)
+
+    // 煙が出るまで待つ。これがくっつき防止の鍵。
+    until smoke(wok) == true {
+        wait(10sec)
+        // 何もしなくていい。ただ待て。
+    }
+
+    assert temp(wok) == SMOKING_HOT,
+        "E001: TEMP_TOO_LOW — まだ熱が足りません。続けて加熱してください。"
+
+    add(oil)    // 鍋全体に油を回す
+
+    // 油が薄く光るまで待つ（1〜2秒）
+    while color(oil) != SHIMMERING {
+        wait(1sec)
+    }
+}
+
+// ──────────────────────────────────────
+//  STEP 2 : 卵ファースト
+//  ゴール: 卵がご飯をコーティングし、パラパラの基礎を作る
+// ──────────────────────────────────────
+
+fn egg_first() {
+    assert temp(wok) == SMOKING_HOT,
+        "E003: SEQUENCE_ERROR — preheat() を先に実行してください。"
+
+    add(eggs)
+
+    /* 卵が固まりきる前にご飯を入れることが最重要。
+       半熟（外側が白く固まり、中心がまだ黄色い）になった瞬間が投入タイミング。
+       迷ったら「少し早いかな」と思うくらいで入れてよい。 */
+
+    while color(eggs) != HALF_COOKED {
+        observe()    // 目を離さずに見ていろ。混ぜなくていい。
+    }
+
+    // ← ここで即座に STEP 3 へ進む。待ってはいけない。
+}
+
+// ──────────────────────────────────────
+//  STEP 3 : ご飯を投入
+//  ゴール: 全粒が卵でコーティングされた状態（黄色いご飯）
+// ──────────────────────────────────────
+
+fn add_rice() {
+    add(rice)
+
+    /* 最初は固まって見えるが焦らない。
+       へら（spatula）で押し潰しながら炒めると自然にほぐれる。 */
+
+    until texture(rice) == SEPARATED {
+        stir(wok)
+        press_lumps(wok)    // 大きな塊を発見したら潰す
+    }
+
+    // 全粒が卵色（淡い黄色）になっていれば成功
+    assert color(rice) == EGG_YELLOW,
+        "まだ白いご飯が残っています。もう少し炒めてください。"
+}
+
+// ──────────────────────────────────────
+//  STEP 4 : 具材を投入
+// ──────────────────────────────────────
+
+fn add_toppings() {
+    // 具材を順番に加えて、それぞれ軽く混ぜる
+    for item in [charsiu, peas, onion] {
+        add(item)
+        stir(wok)    // 各具材を加えるたびに混ぜる
+        wait(10sec)
+    }
+
+    // 全体が均一になるまでさらに炒める
+    until texture(rice) == LOOSE {
+        stir(wok)
+    }
+}
+
+// ──────────────────────────────────────
+//  STEP 5 : 調味
+//  ゴール: 醤油の香ばしい香りが立つこと
+// ──────────────────────────────────────
+
+fn seasoning() {
+    season(salt,   from: "edge")    // 鍋肌へ。ジュッという音がすれば OK
+    season(pepper, from: "edge")
+    season(stock,  from: "edge")    // optional
+
+    /* 醤油は必ず鍋肌から。
+       高温の鍋肌に触れることで醤油のアミノ酸が反応し、
+       香ばしい香り（メイラード反応）が生まれる。
+       ご飯に直接かけると蒸気で飛んでしまい、香りが出ない。 */
+
+    season(soy, from: "edge")
+
+    // 香ばしい香りが立ったら素早く全体を混ぜる
+    if smell(wok) == FRAGRANT {
+        stir(wok)    // 素早く全体に馴染ませる
+    } else {
+        panic!("E001: 鍋の温度が下がっています。強火にして再加熱してください。")
+    }
+
+    // 味見
+    if taste(rice) == "要調整" {
+        // 塩・こしょうで微調整。醤油の追加は焦げるので要注意
+        season(salt, from: "edge")
+    }
+}
+
+// ──────────────────────────────────────
+//  STEP 6 : 仕上げ
+//  ゴール: ごま油の香りをまとわせて完成
+// ──────────────────────────────────────
+
+fn finish() {
+    /* ごま油は香り付けが目的。
+       加熱しすぎると揮発して香りが消える。
+       火を止める直前か止めた直後に入れること。 */
+
+    heat(wok, power: OFF)    // 火を止める
+    drizzle(sesame)           // 全体に回しかける（混ぜすぎない）
+
+    plate()                   // 皿に盛り付ける
+
+    // 完成チェック
+    assert color(rice)   == GOLDEN,    "焦げ不足 or 焦げすぎ"
+    assert texture(rice) == SEPARATED, "パラパラになっていません"
+    assert smell(wok)    == NUTTY,     "ごま油の香りが感じられません"
+}
+
+// ──────────────────────────────────────
+//  MAIN PIPELINE
+// ──────────────────────────────────────
+
+fn main() {
+    mise_en_place()    // 仕込み
+    preheat()          // 予熱
+    egg_first()        // 卵を先に
+    add_rice()         // ご飯を投入
+    add_toppings()     // 具材
+    seasoning()        // 調味
+    finish()           // 仕上げ
+
+    // 🎉
+    print("オープンソースチャーハン complete — 熱いうちに食べてください。")
+}
+
+main()

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://open-source-chahan.example/schema/v1",
+  "name": "チャーハン",
+  "version": "1.0.0",
+  "license": "MIT",
+  "servings": 2,
+  "dependencies": {
+    "required": [
+      {
+        "id": "rice",
+        "name": "ご飯（冷やご飯推奨）",
+        "amount": 400,
+        "unit": "g",
+        "note": "炊きたては水分過多。前日炊飯を強く推奨。"
+      },
+      {
+        "id": "egg",
+        "name": "卵",
+        "amount": 2,
+        "unit": "個",
+        "note": "室温に戻しておくと分散しやすい。"
+      },
+      {
+        "id": "long_onion",
+        "name": "長ねぎ",
+        "amount": 0.5,
+        "unit": "本",
+        "note": "みじん切り。"
+      },
+      {
+        "id": "soy_sauce",
+        "name": "醤油",
+        "amount": 1.5,
+        "unit": "大さじ",
+        "note": "投入タイミングに注意。鍋肌から入れること。"
+      },
+      {
+        "id": "salt",
+        "name": "塩",
+        "amount": 0.5,
+        "unit": "小さじ"
+      },
+      {
+        "id": "pepper",
+        "name": "こしょう",
+        "amount": "適量",
+        "unit": null
+      },
+      {
+        "id": "sesame_oil",
+        "name": "ごま油",
+        "amount": 1,
+        "unit": "小さじ",
+        "note": "仕上げ専用。加熱しすぎると香りが飛ぶ。"
+      },
+      {
+        "id": "cooking_oil",
+        "name": "サラダ油",
+        "amount": 2,
+        "unit": "大さじ"
+      }
+    ],
+    "optional": [
+      {
+        "id": "char_siu",
+        "name": "チャーシュー（または焼き豚）",
+        "amount": 80,
+        "unit": "g",
+        "note": "小さめのダイスカット。"
+      },
+      {
+        "id": "frozen_peas",
+        "name": "冷凍グリンピース",
+        "amount": 30,
+        "unit": "g"
+      },
+      {
+        "id": "chicken_stock_powder",
+        "name": "鶏ガラスープの素",
+        "amount": 1,
+        "unit": "小さじ",
+        "note": "旨味の底上げ。入れすぎ注意（塩分過多になる）。"
+      }
+    ]
+  },
+  "devDependencies": {
+    "equipment": [
+      {
+        "id": "wok",
+        "name": "中華鍋 または フライパン",
+        "note": "鉄製推奨。テフロンパンも可（熱しすぎ注意）。"
+      },
+      {
+        "id": "spatula",
+        "name": "木べら または お玉"
+      },
+      {
+        "id": "stove",
+        "name": "強火コンロ",
+        "note": "ガスコンロ推奨。IHは最大火力で。"
+      }
+    ]
+  }
+}
